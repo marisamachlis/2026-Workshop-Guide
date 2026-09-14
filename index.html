@@ -1114,6 +1114,40 @@
     .content { padding: 0 1rem; }
   }
 </style>
+<script>
+  function launchStackBlitz() {
+    const input = document.getElementById('table-input');
+    const errorEl = document.getElementById('table-input-error');
+    const teamId = parseInt(input.value, 10);
+
+    // Validation: Check if missing/empty or out of 1-20 range
+    if (isNaN(teamId) || teamId < 1 || teamId > 20) {
+      errorEl.textContent = 'Please enter a valid table number between 1 and 20.';
+      errorEl.style.display = 'block';
+      input.setAttribute('aria-invalid', 'true');
+      input.style.borderColor = '#dc2626';
+      return; // Stop execution without navigating
+    }
+
+    // Clear any active errors before opening
+    clearTableError();
+
+    const repoUrl = "https://stackblitz.com/~/github.com/marisamachlis/bugblitz-ghc2026";
+    const targetUrl = `${repoUrl}?file=README.md&initialpath=/?team=${teamId}`;
+    
+    window.open(targetUrl, '_blank', 'noopener,noreferrer');
+  }
+
+  function clearTableError() {
+    const input = document.getElementById('table-input');
+    const errorEl = document.getElementById('table-input-error');
+    
+    errorEl.style.display = 'none';
+    errorEl.textContent = '';
+    input.removeAttribute('aria-invalid');
+    input.style.borderColor = 'var(--border-color, #ccc)';
+  }
+</script>
 
 <!-- Masthead -->
 <div class="masthead">
@@ -1209,26 +1243,70 @@
     </div>
   </section>
 
-  <!-- Setup -->
+ <!-- Setup -->
   <section id="setup">
     <div class="section-label">Get Started</div>
-    <h2>Accessing the Codebase</h2>
-    <p class="lead">Clone the repo and run it locally in your preferred IDE. If you can't run locally, StackBlitz works as a backup.</p>
-
+    <h2>Accessing the Codebase & Website</h2>
+    <p class="lead">Launch the app in StackBlitz for a quick-start workspace with no installation required. If you prefer running locally, you can clone the repository from GitHub.</p>
     <div class="setup-steps">
       <div class="setup-step">
         <div class="setup-step-content">
-          <h3>Clone &amp; Run Locally</h3>
+          <h3>Option 1: Launch in StackBlitz (Recommended)</h3>
+          <p>Enter your table number (1–20) or scan the QR code at your table. This option will connect you to your team's database via the team URL parameter.</p>
+          <!-- Table Number Launcher -->
+          <div style="margin-top: 0.85rem; display: flex; flex-direction: column; gap: 0.5rem;">
+            <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+              <label for="table-input" style="font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);">Table #:</label>
+              <input 
+                id="table-input" 
+                type="number" 
+                min="1" 
+                max="20" 
+                value="1" 
+                aria-describedby="table-input-error"
+                style="width: 70px; padding: 0.45rem 0.6rem; border: 1px solid var(--border-color, #ccc); border-radius: 6px; font-size: 0.9rem; font-weight: 600; text-align: center;" 
+                oninput="clearTableError()"
+              />
+              <button 
+                type="button" 
+                onclick="launchStackBlitz()" 
+                style="background: var(--accent); color: #ffffff; font-family: var(--font-display); font-size: 0.85rem; font-weight: 700; padding: 0.55rem 1.1rem; border: none; border-radius: 6px; cursor: pointer; transition: opacity 0.2s;"
+                onmouseover="this.style.opacity='0.9'"
+                onmouseout="this.style.opacity='1'"
+              >
+                Launch Table Workspace →
+              </button>
+              <span style="font-size: 0.85rem; color: var(--text-muted);">or scan the QR code on your table tent</span>
+            </div>
+
+            <!-- Field-level Inline Error Message -->
+            <div 
+              id="table-input-error" 
+              role="alert" 
+              style="display: none; color: #dc2626; font-size: 0.85rem; font-weight: 600; margin-top: 0.25rem;"
+            ></div>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-secondary); margin-top: 0.6rem;">
+            <em>Note: The <code>?team=&lt;id&gt;</code> parameter automatically routes database requests to your squad's isolated schema in Supabase. Do not remove this parameter.</em>
+          </p>
+        </div>
+      </div>
+      <div class="setup-step">
+        <div class="setup-step-content">
+          <h3>Option 2: Clone &amp; Run Locally</h3>
           <p>Clone the repository from GitHub, then from the project root run:</p>
-          <pre style="font-size: 0.9rem; background: var(--bg); padding: 0.75rem 1rem; border-radius: 6px; margin-top: 0.5rem; overflow-x: auto;"><code>make setup && make dev</code></pre>
-          <p style="margin-top: 0.5rem;">The app boots at <code>http://localhost:4200</code>. Add <code>?team=&lt;your-team-id&gt;</code> to the URL to connect to your team's shared database.</p>
-          <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.5rem;"><strong>Prerequisites:</strong> Node ≥ 22 (the repo has an <code>.nvmrc</code>, so <a href="https://github.com/nvm-sh/nvm">nvm</a> users get the right version automatically). If Node is missing or too old, <code>make setup</code> prints the exact install command for either <code>curl</code> or Homebrew. Open the folder in your preferred IDE — the repo ships recommended extensions (Angular Language Service, Prettier, ESLint) for <a href="https://code.visualstudio.com/">VS Code</a> that install on first open. Full details are in the repo's <code>README.md</code>.</p>
+          <pre><code>make setup && make dev</code></pre>
+          <p>The app will start at <code>http://localhost:4200</code>. To connect to your team's isolated database schema, use either method:</p>
+          <ul>
+            <li><strong>Via URL:</strong> Navigate to <code>http://localhost:4200/?team=&lt;table number&gt;</code> in your browser.</li>
+            <li><strong>Via Code:</strong> Set <code>team: '&lt;table number&gt;'</code> inside <code>src/environments/environment.ts</code>.</li>
+          </ul>
         </div>
       </div>
       <div class="setup-step">
         <div class="setup-step-content">
           <h3>Explore the App</h3>
-          <p>Browse the plant store — shop for plants, add items to cart, try checking out. Notice anything off? That's a bug. Use browser DevTools (<code>F12</code>) to inspect the console, network tab, and DOM.</p>
+          <p>Browse the plant store — shop for plants, add items to cart, try checking out. Notice anything off? That's a bug. Use browser DevTools (Open with <code>F12</code> / Mac: <code>Option + Command + I</code> / Windows: <code>Ctrl + Shift + I</code>) to inspect the page and view the console, network tools, and DOM.</p>
         </div>
       </div>
       <div class="setup-step">
@@ -1240,17 +1318,9 @@
       <div class="setup-step">
         <div class="setup-step-content">
           <h3>Prioritize &amp; Fix</h3>
-          <p>As a team, decide which bugs to tackle first based on severity and your role's perspective. Make code changes in your IDE, and verify your fix works.</p>
+          <p>As a team, decide which bugs to tackle first based on severity and your role's perspective. Make code changes in StackBlitz or your IDE, and verify your fix works.</p>
         </div>
       </div>
-    </div>
-
-    <div style="margin-top: 1.5rem; padding: 1rem 1.25rem; background: var(--surface); border-radius: 8px;">
-      <h3 style="font-size: 0.9rem;">Can't run locally? Use StackBlitz</h3>
-      <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.25rem;">
-        <!-- TODO(diana): fill in updated StackBlitz steps -->
-        Scan the QR code on your table, or navigate to the StackBlitz link provided. Your team URL includes a <code>?team=</code> parameter that connects you to your team's shared database.
-      </p>
     </div>
   </section>
 
@@ -1273,12 +1343,12 @@
       </div>
       <div class="pillar-card">
         <div class="pillar-card-num">Pillar 3</div>
-        <h3>Do Now, TODO Later</h3>
-        <p>Ship the fixes with the best return on effort now. Everything else earns a workaround, a feature flag, or a paragraph in the release notes — never quiet silence and never a stealth backlog.</p>
+        <h3>Leverage your voice</h3>
+        <p>Own your communication and back your decisions with clear rationale. Make sure your reasoning is visible, not just assumed.</p>
       </div>
     </div>
 
-    <div class="mindset-tagline">The measure of progress: a new console error you haven't hit yet.</div>
+    <div class="mindset-tagline">The measure of progress: a new error you haven't hit yet.</div>
   </section>
 
   <!-- Workshop Goals -->
