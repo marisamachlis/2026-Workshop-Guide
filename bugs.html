@@ -292,35 +292,31 @@
       </div>
     </div>
 
-    <div class="bug-guide-card" id="cart-modal-animation" data-reporter="pm" data-types="interaction css" data-severity="critical" style="--bug-guide-color: var(--severity-critical); --bug-guide-bg: var(--severity-critical-bg);">
+    <div class="bug-guide-card" id="dialog-bug" data-reporter="pm" data-types="interaction css">
       <div class="bug-guide-card-header">
         <div class="bug-guide-card-type">Interaction Bug</div>
         <div class="bug-guide-card-type severity">CSS</div>
       </div>
-      <h3>Modal drag breaks interacting with the page</h3>
+      <h3>Clear Cart dialog locks the page</h3>
       <div class="reporter-line" style="--reporter-color: var(--role-pm);"><span class="reporter-dot"></span>Reported by <strong>Product Manager</strong></div>
-      <p class="bug-guide-card-symptom">After attempting to click and drag the cart modal, the page stops responding to clicks, and you need to refresh the page.</p>
+      <p class="bug-guide-card-symptom">After dismissing the Clear Cart dialog, customers are unable to click anything on the site and are forced to refresh the page to continue shopping.</p>
       <div class="bug-guide-sub">Reproduction Steps</div>
       <ol>
-        <li>Add an item to the cart (the modal opens automatically).</li>
-        <li>Try clicking and dragging the modal.</li>
-        <li>The modal doesn't move, and after releasing, clicking elsewhere has no effect.</li>
-      </ol>
-      <div class="bug-guide-sub">Comparison Case</div>
-      <ol>
-        <li>Open the cart modal and close it using the × button. Don't try dragging.</li>
-        <li>See that the page remains fully responsive to clicks.</li>
+        <li>Add an item to the cart to open the cart modal.</li>
+        <li>Click <strong>Clear Cart</strong> to open the confirmation prompt.</li>
+        <li>Click <strong>Keep Items</strong> or <strong>Clear Cart</strong> to close the prompt.</li>
+        <li>If you try to click any product or navigation link on the page, it has no effect.</li>
       </ol>
       <div class="bug-guide-sub">Acceptance Criteria</div>
       <ol>
-        <li>Clicking and dragging the modal allows users to reposition the modal on the page.</li>
-        <li>Users can close out of the modal after dragging.</li>
+        <li>Confirming "Clear Cart" successfully empties all items from the cart.</li>
+        <li>Closing or confirming the dialog leaves the page fully clickable so customers can keep browsing without refreshing.</li>
       </ol>
       <div class="workshop-prompt">
-        <strong>Your mission:</strong> Reproduce the unresponsive state after interacting with the modal, inspect the browser state to determine what is blocking user inputs, and ensure all event handlers and elements clean up correctly when released.
+        <strong>Your mission:</strong> Reproduce the issue by interacting with the confirmation dialog and restore normal page interaction.
       </div>
       <div class="bug-guide-card-footer">
-        <a class="solution-link" href="solutions.html#cart-modal-animation">View solution →</a>
+        <a class="solution-link" href="solutions.html#dialog-bug">View solution →</a>
       </div>
     </div>
 

@@ -110,7 +110,7 @@
       <li><a href="#promo-duplicate">The same promo code can be applied multiple times</a></li>
       <li><a href="#sold-out-feedback">"The Add to Cart button is broken on some plants"</a></li>
       <li><a href="#broken-image">One of the product cards has a missing image</a></li>
-      <li><a href="#cart-modal-animation">Cart modal drag locks the store</a></li>
+      <li><a href="#dialog-bug">Clear Cart dialog locks the page</a></li>
       <li><a href="#stale-search">Stale header-search results</a></li>
     </ol>
   </nav>
@@ -521,57 +521,33 @@ WHERE slug = '&lt;affected-slug&gt;';</code></pre>
     </ul>
   </div>
 
-  <div class="solution" id="cart-modal-animation">
-    <span class="solution-tag">Interaction · CSS</span>
-    <h2>9. Cart modal drag locks the store</h2>
-    <a class="solution-bug-link" href="bugs.html#cart-modal-animation">← back to bug</a>
+  <div class="solution" id="dialog-bug">
+    <span class="solution-tag">DOM &amp; Overlays</span>
+    <h2>9. Clear Cart dialog locks the page</h2>
+    <a class="solution-bug-link" href="bugs.html#dialog-bug">← back to bug</a>
 
     <div class="solution-section-label">Root Cause</div>
-    <p>The cart modal is draggable by its header. Once the mouse moves past a 3-pixel threshold, <code>beginDrag()</code> creates a transparent full-viewport <code>&lt;div&gt;</code> and appends it to <code>document.body</code> — its only job is to keep the "grabbing" cursor visible while the user drags outside the modal.</p>
-    <p class="file-path">src/app/cart-modal/cart-modal.component.ts</p>
-    <p>On <code>mouseup</code>, <code>onDragEnd</code> removes the document-level <code>mousemove</code> / <code>mouseup</code> listeners and flips <code>isDragging</code> back to <code>false</code> — but it never removes the overlay it created. The overlay stays in the DOM at <code>position: fixed; inset: 0; z-index: 2000</code>, invisible but hungry, swallowing every subsequent click on the page.</p>
+    <p>Dismissing the Clear Cart dialog hides the dialog box, but leaves the invisible backdrop overlay element active in the DOM with <code>pointer-events: auto</code>, blocking user interactions with the rest of the page.</p>
 
     <div class="solution-section-label">The Fix</div>
-    <p>Tear the overlay down at the end of the drag, and do it in a <code>finally</code> block so it happens no matter what — including release-outside-window, an exception mid-drag, or the tab losing focus:</p>
-    <pre><code>// cart-modal.component.ts
-private onDragEnd = () =&gt; {
-  document.removeEventListener('mousemove', this.onDragMove);
-  document.removeEventListener('mouseup', this.onDragEnd);
-
-<span class="diff-add">  try {</span>
-  if (this.pendingDrag) {
-    this.pendingDrag = false;
-    this.initialMouse = null;
-    return;
+    <p>Ensure the dialog backdrop overlay is hidden or removed from pointer events when the dialog is dismissed:</p>
+    <pre><code>function closeClearCartDialog() {
+  const dialogOverlay = document.querySelector('.dialog-overlay');
+  if (dialogOverlay) {
+<span class="diff-add">    dialogOverlay.classList.remove('active');
+    dialogOverlay.style.display = 'none';
+    dialogOverlay.style.pointerEvents = 'none';</span>
   }
-
-  this.isDragging = false;
-<span class="diff-add">  } finally {
-    // ALWAYS remove the transient grab-cursor overlay, even if we bailed early
-    if (this.dragOverlayEl) {
-    this.dragOverlayEl.remove();
-    this.dragOverlayEl = null;
-    }
-  }</span>
-};</code></pre>
-    <p>Add a matching safety net for the case where the user drags out of the window and releases somewhere the page never hears about — a <code>window</code>-level <code>blur</code> listener that ends the drag the same way:</p>
-    <pre><code>// cart-modal.component.ts — inside beginDrag()
-<span class="diff-add">window.addEventListener('blur', this.onDragEnd, { once: true });</span></code></pre>
+}</code></pre>
 
     <div class="solution-section-label">Why This Works</div>
     <ul>
-      <li><strong>The overlay is the only thing blocking clicks.</strong> Removing it in <code>onDragEnd</code> restores the page immediately — no reload needed.</li>
-      <li><strong>The <code>finally</code> block</strong> guarantees the overlay is torn down even if the early-return path runs, or something throws in between. Cleanup that lives only in the happy path is cleanup that eventually gets skipped.</li>
-      <li><strong>Nulling <code>dragOverlayEl</code></strong> after removal prevents a second drag from leaving the first overlay dangling in the property (and from double-removing an already-detached node).</li>
-      <li><strong>The <code>blur</code> fallback</strong> covers the "released outside the window" case — the browser fires <code>blur</code> on the window when focus leaves it, giving you a reliable last chance to clean up.</li>
+      <li><strong>Pointer Cleanup:</strong> Disabling <code>pointer-events</code> prevents invisible overlays from capturing mouse and touch input.</li>
+      <li><strong>DOM Synchronization:</strong> Ensures the backdrop visual state stays in sync with the modal visibility.</li>
     </ul>
-
-    <div class="solution-section-label">Related Pitfalls</div>
+    <div class="solution-section-label">Key Takeaway</div>
     <ul>
-      <li>Consider switching from <code>mousedown</code>/<code>mousemove</code>/<code>mouseup</code> to <strong>Pointer Events</strong> with <code>setPointerCapture</code> — the browser guarantees you get the matching <code>pointerup</code> (or a <code>pointercancel</code>) on the element you captured, which sidesteps this whole class of "the release never came" bugs.</li>
-      <li>In DevTools, running <code>document.elementFromPoint(x, y)</code> in the console over a "locked" area returns the stray overlay — a fast way to confirm what's catching your clicks.</li>
-      <li>The <strong>Elements</strong> panel shows the orphaned <code>&lt;div style="position: fixed; inset: 0; z-index: 2000"&gt;</code> sitting as the last child of <code>&lt;body&gt;</code>. Deleting it from the tree unblocks the page — proof you've found the culprit before writing the fix.</li>
-      <li>Any component that appends nodes to <code>document.body</code> during an interaction should own their removal on <em>every</em> exit path, not just the expected one.</li>
+      <li><strong>Complete Lifecycle Cleanup:</strong> Whenever a component or temporary state is dismissed, ensure all related side effects—including overlay wrappers, global event listeners, body locks, and focus states—are fully torn down together.</li>
     </ul>
   </div>
 
