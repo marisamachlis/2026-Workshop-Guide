@@ -112,6 +112,7 @@
       <li><a href="#broken-image">One of the product cards has a missing image</a></li>
       <li><a href="#dialog-bug">Clear Cart dialog locks the page</a></li>
       <li><a href="#stale-search">Stale header-search results</a></li>
+      <li><a href="#sale-price-not-honored">Cart and checkout totals ignore the sale price</a></li>
     </ol>
   </nav>
 
@@ -591,6 +592,57 @@ async onSearch(query: string) {
       <li>Don't debounce so long that suggestions feel laggy — 100–200ms is the sweet spot for search-as-you-type.</li>
       <li>Also handle the empty-query case: clear suggestions immediately rather than firing a network request for <code>""</code>.</li>
       <li>If you need infinite-scroll or paginated results, switch to <code>concatMap</code> or <code>exhaustMap</code> — <code>switchMap</code>'s cancellation would drop the wrong requests.</li>
+    </ul>
+  </div>
+
+  <div class="solution" id="sale-price-not-honored">
+    <span class="solution-tag">Data · Logic</span>
+    <h2>11. Cart and checkout totals ignore the sale price</h2>
+    <a class="solution-bug-link" href="bugs.html#sale-price-not-honored">← back to bug</a>
+
+    <div class="solution-section-label">Root Cause</div>
+    <p>In the domain, <code>price</code> is the amount the shopper pays (the sale price when there is one), and <code>compare_at_price</code> is a display-only "was this much" reference — the crossed-out number shown next to the sale price on the product card. The presence of a <code>compare_at_price</code> is also what tags an item "on sale" in the shop filter.</p>
+    <p>The cart's <code>subtotal</code> computed signal reads <code>(item.product.compare_at_price || item.product.price) * item.quantity</code>. The order is inverted: when a product is on sale, <code>compare_at_price</code> is truthy, so the reduce uses the <em>higher</em> crossed-out price. <code>total()</code> derives from <code>subtotal()</code>, so both the summary Subtotal and the checkout Total inherit the same inflated number. Meanwhile every per-line template reads <code>item.product.price * item.quantity</code> directly, so line items look correct — which is exactly what makes the mismatch so confusing at first glance.</p>
+    <p class="file-path">src/lib/cart.service.ts:68–74</p>
+
+    <div class="solution-section-label">The Fix</div>
+    <p>Read the same price the templates read. One line:</p>
+    <pre><code>// src/lib/cart.service.ts
+subtotal = computed(() =&gt;
+  this.items().reduce(
+<span class="diff-remove">    (sum, item) =&gt;
+      sum + (item.product.compare_at_price || item.product.price) * item.quantity,</span>
+<span class="diff-add">    (sum, item) =&gt; sum + item.product.price * item.quantity,</span>
+    0
+  )
+);</code></pre>
+
+    <div class="solution-section-label">How to Reproduce</div>
+    <ul>
+      <li>Open the header <strong>Sale</strong> link (or sort the shop by <strong>On Sale</strong>) and add any product with a "Sale" badge.</li>
+      <li>In the cart modal, note the line-item price versus the modal's <strong>Total</strong> — the total will be higher.</li>
+      <li>Cross-check on the cart page: the line-item total uses the sale price, but <strong>Subtotal</strong> and <strong>Total</strong> jump up to the crossed-out price.</li>
+      <li>Continue to checkout — the <strong>Place Order - $…</strong> button carries the same inflated total.</li>
+    </ul>
+
+    <div class="solution-section-label">Confirming the Fix</div>
+    <ul>
+      <li>Repeat the sale-item flow: line-item price × quantity should equal the modal total, the cart Subtotal, and the checkout total.</li>
+      <li>Add a non-sale item alongside — the mixed cart's totals should still be the sum of each line's <code>price × quantity</code>.</li>
+      <li>Place a test order and inspect the <code>orders.subtotal</code> and <code>orders.total</code> columns — they should now match what the shopper saw at checkout.</li>
+    </ul>
+
+    <div class="solution-section-label">Why This Works</div>
+    <ul>
+      <li><strong>Non-sale items are unaffected.</strong> When <code>compare_at_price</code> is <code>null</code>, the old expression already fell through to <code>price</code>, so the numbers on plain items never depended on the buggy branch.</li>
+      <li><strong>The order write path is also corrected.</strong> <code>checkout.component.ts</code> passes <code>this.subtotal()</code> and <code>this.total()</code> straight into the <code>orders</code> INSERT — fixing the computed also fixes what gets persisted to the database.</li>
+    </ul>
+
+    <div class="solution-section-label">Related Pitfalls</div>
+    <ul>
+      <li><strong>Beware <code>a || b</code> as a "prefer <em>a</em>" fallback</strong> when <em>a</em> is the value you don't want in the common case. Here, <code>compare_at_price</code> is <em>set</em> precisely when there's a sale — so the truthiness check silently reversed the meaning of "which price to charge." When two fields both hold real values, name and pick explicitly (e.g., always <code>item.product.price</code>) instead of relying on truthy-fallback order.</li>
+      <li><strong>Percentage coupons compound the bug.</strong> <code>getCouponDiscount()</code> multiplies <code>subtotal()</code> by the discount rate — a wrong subtotal also inflates a percent discount, which can mask the total error by "coincidentally" bringing the number back close to the expected one. Verify with a fixed-amount coupon too.</li>
+      <li><strong>Line items in the DB were already correct.</strong> <code>order_items.price</code> is written from <code>item.product.price</code>, so historical <code>order_items</code> rows are trustworthy — but the aggregate <code>orders.subtotal</code> / <code>orders.total</code> for any shipped sale orders will be inflated.</li>
     </ul>
   </div>
 

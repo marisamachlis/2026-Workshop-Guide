@@ -274,6 +274,8 @@
     white-space: nowrap;
     border-bottom: 2px solid transparent;
     transition: color 0.2s, border-color 0.2s;
+    flex: 1 0 auto;
+    text-align: center;
   }
 
   .section-nav a:hover,
@@ -590,6 +592,61 @@
     color: var(--accent);
   }
 
+  /* ── Prompting framework (Brief · Audit · Own) ── */
+  .prompt-framework-intro {
+    margin-top: 1.75rem;
+    font-size: 0.98rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .prompt-framework-intro strong {
+    color: var(--text-primary);
+  }
+
+  .prompt-framework-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .prompt-framework-card {
+    padding: 1.25rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    box-shadow: 0 1px 3px var(--card-shadow);
+  }
+
+  .prompt-framework-num {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    color: var(--accent-bright);
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+
+  .prompt-framework-card h3 {
+    font-size: 1.05rem;
+    margin: 0 0 0.6rem;
+    color: var(--text-primary);
+  }
+
+  .prompt-framework-card ul {
+    margin: 0;
+    padding-left: 1.15rem;
+  }
+
+  .prompt-framework-card li {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    padding: 0.15rem 0;
+  }
+
   /* ── AI tips ── */
   .ai-tips {
     display: flex;
@@ -665,7 +722,8 @@
   }
 
   /* ── Bug-Busting Mindset ── */
-  .mindset-tagline {
+  .mindset-tagline,
+  .objectives-tagline {
     margin-top: 1rem;
     padding: 0.9rem 1.25rem;
     background: var(--accent-glow);
@@ -703,8 +761,15 @@
 
   .pillar-card h3 {
     font-size: 1.05rem;
-    margin: 0 0 0.5rem;
+    margin: 0 0 0.35rem;
     color: var(--text-primary);
+  }
+
+  .pillar-card-subtitle {
+    font-style: italic;
+    font-size: 0.98rem;
+    color: var(--accent);
+    margin: 0 0 0.5rem;
   }
 
   .pillar-card p {
@@ -883,11 +948,24 @@
     .effort-matrix { font-size: 0.8rem; }
   }
 
+  /* ── Setup sub-headings ── */
+  .setup-subhead {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--text-primary);
+    margin-top: 2rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .setup-subhead:first-of-type {
+    margin-top: 1rem;
+  }
+
   /* ── Supplies ── */
   .supplies-row {
     display: flex;
     gap: 2rem;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     flex-wrap: wrap;
   }
 
@@ -1157,7 +1235,7 @@
   <div class="masthead-meta">
     <span>60-Minute Workshop</span>
     <span>Anaheim, CA</span>
-    <span>Oct 27–30, 2026</span>
+    <span>Oct 29, 2026</span>
   </div>
   <div class="masthead-pages">
     <a href="index.html" aria-current="page">Workshop Guide</a>
@@ -1170,15 +1248,10 @@
 <nav class="section-nav" aria-label="Page sections">
   <div class="section-nav-inner">
     <a href="#timeline">Timeline</a>
-    <a href="#supplies">Supplies</a>
     <a href="#setup">Setup</a>
-    <a href="#mindset">Mindset</a>
     <a href="#goals">Goals</a>
+    <a href="#mindset">Mindset</a>
     <a href="#objectives">Objectives</a>
-    <a href="#roles">Roles</a>
-    <a href="#severity">Triage</a>
-    <a href="#bugs">Bug Types</a>
-    <a href="#materials">Materials</a>
     <a href="#ai-tips">AI Tips</a>
     <a href="#hints">Hints</a>
   </div>
@@ -1196,26 +1269,27 @@
       <div class="timeline-step">
         <div class="timeline-step-time">0 – 10 min</div>
         <h3>Kickoff</h3>
-        <p>Set the stage, walk through goals, mindset, and terms.</p>
+        <p>Set the stage, walk through goals, mindset, and AI prompting.</p>
       </div>
       <div class="timeline-step">
         <div class="timeline-step-time">10 – 45 min</div>
-        <h3>The Triage</h3>
+        <h3>Bug Blitz</h3>
         <p>Pick your role, form your War Room squad, and review the Bug Report from stakeholders.</p>
       </div>
       <div class="timeline-step">
         <div class="timeline-step-time">45 – 60 min</div>
         <h3>Debrief</h3>
-        <p>Review the room's toughest bug together, share your War Room experience, and review goals for your next release.</p>
+        <p>Review pillars and share your War Room experience. If time allows, we will review a bug together.</p>
       </div>
     </div>
   </section>
 
-  <!-- Supplies -->
-  <section id="supplies">
+  <!-- Setup (includes What to Bring + Accessing the Codebase) -->
+  <section id="setup">
     <div class="section-label">Before You Start</div>
-    <h2>What to Bring</h2>
+    <h2>Setup</h2>
 
+    <h3 class="setup-subhead">What to Bring</h3>
     <div class="supplies-row">
       <div class="supplies-col">
         <h3>Required</h3>
@@ -1241,13 +1315,10 @@
         </ul>
       </div>
     </div>
-  </section>
 
- <!-- Setup -->
-  <section id="setup">
-    <div class="section-label">Get Started</div>
-    <h2>Accessing the Codebase & Website</h2>
+    <h3 class="setup-subhead">Accessing the Codebase &amp; Website</h3>
     <p class="lead">Launch the app in StackBlitz for a quick-start workspace with no installation required. If you prefer running locally, you can clone the repository from GitHub.</p>
+
     <div class="setup-steps">
       <div class="setup-step">
         <div class="setup-step-content">
@@ -1294,9 +1365,14 @@
       <div class="setup-step">
         <div class="setup-step-content">
           <h3>Option 2: Clone &amp; Run Locally</h3>
-          <p>Clone the repository from GitHub, then from the project root run:</p>
+          <p><strong>Prerequisites:</strong> Node.js 22 or newer. Check with <code>node --version</code>; if you need to install or upgrade it, download from <a href="https://nodejs.org/">nodejs.org</a> (installers for macOS, Windows, and Linux), or use a version manager — <a href="https://github.com/nvm-sh/nvm">nvm</a> on macOS/Linux, <a href="https://github.com/coreybutler/nvm-windows">nvm-windows</a> on Windows — then run <code>nvm install 22 &amp;&amp; nvm use 22</code>.</p>
+          <p>Clone the repository from GitHub, then from the project root pick one of the two paths below.</p>
+          <p style="margin-top: 0.75rem;"><strong>Path A — Standard npm (recommended, works on any OS):</strong></p>
+          <pre><code>npm install
+npm start</code></pre>
+          <p style="margin-top: 0.75rem;"><strong>Path B — Makefile shortcut (if you already have <code>make</code> and <code>nvm</code>):</strong> the repo ships a <code>Makefile</code> that wraps <code>nvm install</code> (using <code>.nvmrc</code>), deps, and the dev server in one go. It works well when both tools are set up, but <em>may not work</em> depending on your environment (missing <code>make</code>, no <code>nvm</code>, non-Unix shell). If it errors, fall back to Path A.</p>
           <pre><code>make setup && make dev</code></pre>
-          <p>The app will start at <code>http://localhost:4200</code>. To connect to your team's isolated database schema, use either method:</p>
+          <p>Either path serves the app at <code>http://localhost:4200</code>. To connect to your team's isolated database schema, use either method:</p>
           <ul>
             <li><strong>Via URL:</strong> Navigate to <code>http://localhost:4200/?team=&lt;table number&gt;</code> in your browser.</li>
             <li><strong>Via Code:</strong> Set <code>team: '&lt;table number&gt;'</code> inside <code>src/environments/environment.ts</code>.</li>
@@ -1324,33 +1400,6 @@
     </div>
   </section>
 
-  <!-- Bug-Busting Mindset -->
-  <section id="mindset">
-    <div class="section-label">Set the Tone</div>
-    <h2>Bug-Busting Mindset</h2>
-    <p class="lead">Bugs on release day come with the territory. A calm War Room isn't one where nothing broke — it's one that knows how to react. Three pillars carry that.</p>
-
-    <div class="mindset-grid">
-      <div class="pillar-card">
-        <div class="pillar-card-num">Pillar 1</div>
-        <h3>Psychological Safety</h3>
-        <p>Nobody debugs well while getting blamed. Name what you see, hand your teammates the context, and decide together what needs to move first — panic and finger-pointing stay outside the room.</p>
-      </div>
-      <div class="pillar-card">
-        <div class="pillar-card-num">Pillar 2</div>
-        <h3>Structured Prioritization</h3>
-        <p>Every ticket gets weighed against user pain and engineering cost <em>before</em> anyone starts fixing. A deliberate call beats a fast guess, and the framework — not the loudest voice — decides what's next.</p>
-      </div>
-      <div class="pillar-card">
-        <div class="pillar-card-num">Pillar 3</div>
-        <h3>Leverage your voice</h3>
-        <p>Own your communication and back your decisions with clear rationale. Make sure your reasoning is visible, not just assumed.</p>
-      </div>
-    </div>
-
-    <div class="mindset-tagline">The measure of progress: a new error you haven't hit yet.</div>
-  </section>
-
   <!-- Workshop Goals -->
   <section id="goals">
     <div class="section-label">Why We're Here</div>
@@ -1363,6 +1412,13 @@
         <div>
           <h3>Confidence Building</h3>
           <p>Walk into your next launch day knowing you have a repeatable playbook for the moment things break.</p>
+        </div>
+      </div>
+      <div class="goal-card">
+        <div class="goal-icon">🤝</div>
+        <div>
+          <h3>Teamwork &amp; Communication</h3>
+          <p>Advocate for priorities through your role's lens, share context, and land at a decision the whole War Room can back.</p>
         </div>
       </div>
       <div class="goal-card">
@@ -1379,244 +1435,72 @@
           <p>Practice using the browser Console, Elements, and Network tabs — plus AI as a debugging partner — to isolate root causes fast.</p>
         </div>
       </div>
-      <div class="goal-card">
-        <div class="goal-icon">🤝</div>
-        <div>
-          <h3>Teamwork &amp; Communication</h3>
-          <p>Advocate for priorities through your role's lens, share context, and land at a decision the whole War Room can back.</p>
-        </div>
+    </div>
+  </section>
+
+  <!-- Bug-Busting Mindset -->
+  <section id="mindset">
+    <div class="section-label">Set the Tone</div>
+    <h2>Bug-Busting Mindset</h2>
+    <p class="lead">Bugs on release day come with the territory. A calm War Room isn't one where nothing broke — it's one that knows how to react. Three pillars carry that.</p>
+
+    <div class="mindset-grid">
+      <div class="pillar-card">
+        <div class="pillar-card-num">Pillar 1</div>
+        <h3>Psychological Safety</h3>
+        <p class="pillar-card-subtitle">Reward Curiosity</p>
+        <p>Respond together, not with blame or panic. Surface what's broken and share context.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-card-num">Pillar 2</div>
+        <h3>Strategic Triage &amp; Trade-Offs</h3>
+        <p class="pillar-card-subtitle">Functional over Flawless</p>
+        <p>Weigh impact against effort. Resolve true release blockers now; defer the rest.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-card-num">Pillar 3</div>
+        <h3>Leveraging Your Voice</h3>
+        <p class="pillar-card-subtitle">Own Your Reasoning</p>
+        <p>Back your decisions with clear rationale. Make sure your reasoning is visible, not just assumed.</p>
       </div>
     </div>
+
+    <div class="mindset-tagline">True success is getting a different console error than before.</div>
   </section>
 
   <!-- Objectives -->
   <section id="objectives">
     <div class="section-label">What Success Looks Like</div>
-    <h2>Your Objectives</h2>
+    <h2>Objectives</h2>
     <p class="lead">By the end of the workshop, every participant should have practiced these four moves.</p>
 
     <ol class="objectives-list">
       <li>
-        <strong>Rank every bug on Priority × Effort.</strong>
-        Sort the incoming report into P1/P2/P3 with a rough effort estimate. Be ready to defend your ranking with one sentence per ticket.
+        <strong>Triage First.</strong>
+        Assign priority and effort to the reported bugs. Sort them into P1/P2/P3 with a quick effort estimate and be ready to defend your ranking in one sentence per ticket.
       </li>
       <li>
-        <strong>Choose the approach consciously: workaround or root cause.</strong>
-        For each bug you pick up, decide whether to ship a quick mitigation now or dig for the actual root cause. Both are correct answers in the right column of the matrix.
+        <strong>Share the Why.</strong>
+        Base decisions on user impact and dev effort — not gut feel. Your teammates should be able to follow your reasoning without asking.
       </li>
       <li>
-        <strong>Show your work.</strong>
-        Every triage call and every fix comes with the "why" — grounded in user impact and effort, not gut feel. Your teammates should be able to follow your reasoning without asking.
+        <strong>Choose Your Approach.</strong>
+        Decide between a quick workaround and a comprehensive fix. Both are right answers in the right column of the Priority × Effort matrix.
       </li>
       <li>
-        <strong>Ask for help early.</strong>
-        Teammates first, the guide's Hints and AI Templates second, facilitator third. Being stuck for 20 minutes silently is a bug in the process, not a badge.
+        <strong>Problem Solve.</strong>
+        Leverage DevTools (Console, Network, Elements) and AI agents — briefed, audited, owned — to actually squash the bugs.
       </li>
     </ol>
-  </section>
 
-  <!-- Roles -->
-  <section id="roles">
-    <div class="section-label">Know Your Team</div>
-    <h2>Choose Your Role</h2>
-    <p class="lead">Pick a role from the cards below. Each role brings a unique perspective to the War Room — the goal is to advocate for priorities through your role's lens.</p>
-
-    <div class="roles-grid">
-      <div class="role-card" style="--role-color: var(--role-dev)">
-        <div class="role-card-title">Software Engineer / Developer</div>
-        <div class="role-card-vibe">The builder, the fixer, and the realist.</div>
-        <p>You're the one in the console, reading stack traces, and actually writing the code to fix the issues. You know how hard a fix will actually be.</p>
-        <div class="role-card-focus">Focus</div>
-        <div class="role-card-focus-text">Technical health of the app, state management, errors in the console, and writing the actual fix.</div>
-        <blockquote>Is this a quick one-line fix, or is this a massive architectural problem that will take three days to untangle safely?</blockquote>
-      </div>
-
-      <div class="role-card" style="--role-color: var(--role-pm)">
-        <div class="role-card-title">Product Owner / Product Manager</div>
-        <div class="role-card-vibe">The voice of the business and the customer.</div>
-        <p>You care about protecting revenue, conversion rates, and the brand's reputation. Less about how the code works, more about the user's experience.</p>
-        <div class="role-card-focus">Focus</div>
-        <div class="role-card-focus-text">Business impact, customer experience, and how the bug makes the company look.</div>
-        <blockquote>Does this bug stop people from giving us money, or does it make our company look unprofessional?</blockquote>
-      </div>
-
-      <div class="role-card" style="--role-color: var(--role-lead)">
-        <div class="role-card-title">People Leader / Engineering Manager</div>
-        <div class="role-card-vibe">The shield, the translator, and the resource allocator.</div>
-        <p>You protect the engineering team from unnecessary panic, ensure projects are scoped correctly, and make sure the right people work on the right things.</p>
-        <div class="role-card-focus">Focus</div>
-        <div class="role-card-focus-text">Team capacity, project prioritization, and shielding engineers so they can actually focus on debugging.</div>
-        <blockquote>Can we handle this angry Director so my engineers can actually focus on debugging?</blockquote>
-      </div>
-
-      <div class="role-card" style="--role-color: var(--role-qa)">
-        <div class="role-card-title">QA Tester</div>
-        <div class="role-card-vibe">The gatekeeper of quality and the customer advocate.</div>
-        <p>You create comprehensive test plans, identify edge cases, and ensure that the bug slips through to production are caught. You validate new features and regressions.</p>
-        <div class="role-card-focus">Focus</div>
-        <div class="role-card-focus-text">Identifying edge cases, ensuring the fix doesn't create new bugs, and validating from the user's perspective.</div>
-        <blockquote>My job is to try and break it. If I can't break it, your users won't either.</blockquote>
-      </div>
-
-      <div class="role-card" style="--role-color: var(--role-director)">
-        <div class="role-card-title">Leadership / Director</div>
-        <div class="role-card-vibe">The big picture and the bottom line.</div>
-        <p>Strategic impact, brand reputation, and timeline. Highly detached from technical details but focused on blast radius. You need answers fast.</p>
-        <div class="role-card-focus">Focus</div>
-        <div class="role-card-focus-text">Revenue impact, brand risk, and high-level status updates for stakeholders.</div>
-        <blockquote>How much money are we losing per minute? Do we need to initiate a full rollback? Give me a high-level status update in exactly 15 minutes.</blockquote>
-      </div>
-
-      <div class="role-card" style="--role-color: var(--role-support)">
-        <div class="role-card-title">Customer Support (Optional)</div>
-        <div class="role-card-vibe">The frontline voice, calming the waters.</div>
-        <p>You're providing solutions, gathering feedback, and escalating systemic issues to engineering. You're the voice of the user's real problems.</p>
-        <div class="role-card-focus">Focus</div>
-        <div class="role-card-focus-text">Providing updates, feedback gathering, and escalating user-reported issues.</div>
-        <blockquote>I'm the voice of our users' problems and their direct link to a fix. Tons of complaints look one-size-fits-all but each one is unprecedented.</blockquote>
-      </div>
-    </div>
-  </section>
-
-  <!-- Severity Guide -->
-  <section id="severity">
-    <div class="section-label">Triage &amp; Prioritize</div>
-    <h2>Bug Severity Levels</h2>
-    <p class="lead">Not every bug is created equal. Use these severity levels to decide which bugs to tackle first as a team.</p>
-
-    <h3 style="font-size: 1rem; margin-top: 1.75rem;">Priority × Effort — the quick-triage matrix</h3>
-    <p style="font-size: 0.92rem; color: var(--text-secondary); margin-top: 0.25rem;">Once every ticket has a priority (P1 = critical, P3 = cosmetic) and a rough effort estimate, drop it on the grid. Top-left is your <strong>Quick Win</strong> — highest impact, lowest cost. Start there.</p>
-
-    <table class="effort-matrix" aria-label="Priority × Effort matrix">
-      <thead>
-        <tr>
-          <th></th>
-          <th scope="col">Low Effort</th>
-          <th scope="col">Medium Effort</th>
-          <th scope="col">High Effort</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th scope="row" class="row-label">P1</th>
-          <td class="quick-win">Quick Win — do first</td>
-          <td>Do now; assign your best debugger</td>
-          <td>Ship a workaround, schedule the real fix</td>
-        </tr>
-        <tr>
-          <th scope="row" class="row-label">P2</th>
-          <td>Slot in this sprint</td>
-          <td>Next sprint</td>
-          <td>Ship a workaround now; split the real fix across sprints</td>
-        </tr>
-        <tr>
-          <th scope="row" class="row-label">P3</th>
-          <td>Batch with the next release</td>
-          <td>Backlog</td>
-          <td>Assign an owner and revisit date</td>
-        </tr>
-      </tbody>
-    </table>
-
-    <div style="margin-top: 1.25rem; padding: 1rem 1.25rem; background: var(--surface); border-radius: 8px; font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
-      <strong style="color: var(--text-primary);">Workaround vs. root-cause fix — pick on purpose.</strong>
-      A workaround shrinks the blast radius today (a feature flag, a hidden button, a "we know" banner). A root-cause fix removes the bug for good but takes longer to land. On release day, most of the right-column cells above are asking you to ship the workaround now and schedule the real fix — not choose between them.
-    </div>
-
-    <div class="severity-list">
-      <div class="severity-row">
-        <div class="severity-badge critical">Critical</div>
-        <div class="severity-content">
-          <h3>Blocker — Feature Completely Broken</h3>
-          <p>No workaround exists. Prevents a primary user flow. Causes severe loss of revenue, data loss, security vulnerabilities, or widespread app crashes.</p>
-          <div class="examples"><strong>Example impact:</strong> Users can't check out, the cart total is wrong by orders of magnitude, or the app crashes on load.</div>
-        </div>
-      </div>
-
-      <div class="severity-row">
-        <div class="severity-badge major">Major</div>
-        <div class="severity-content">
-          <h3>Behavioral — Badly Frustrating UX</h3>
-          <p>A workaround exists but causes highly frustrating user experience. Frustrated users can still eventually check out, but something important is clearly wrong.</p>
-          <div class="examples"><strong>Example impact:</strong> The cart doesn't update correctly, a promotional code fails to apply, or a form rejects valid input.</div>
-        </div>
-      </div>
-
-      <div class="severity-row">
-        <div class="severity-badge minor">Minor</div>
-        <div class="severity-content">
-          <h3>Cosmetic — Polish &amp; Alignment</h3>
-          <p>Typographical errors or minor alignment issues with negligible impact. The app functions correctly but looks less polished. Users can still shop without friction.</p>
-          <div class="examples"><strong>Example impact:</strong> A button has the wrong shade of color, a label has a typo, or icons are slightly misaligned.</div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Bug Types -->
-  <section id="bugs">
-    <div class="section-label">What You'll Encounter</div>
-    <h2>Bug Categories</h2>
-    <p class="lead">The Bug Report contains a variety of issue types. Each requires different debugging tools and approaches.</p>
-
-    <div class="bug-categories">
-      <div class="bug-cat">
-        <div class="bug-cat-icon">🎨</div>
-        <h3>Visual / CSS</h3>
-        <p>Layout breaks, z-index conflicts, pop-ups that won't close, mobile responsiveness issues.</p>
-      </div>
-      <div class="bug-cat">
-        <div class="bug-cat-icon">🔢</div>
-        <h3>Logic &amp; Calculation</h3>
-        <p>Incorrect totals, wrong price references, off-by-one errors, string math instead of number math.</p>
-      </div>
-      <div class="bug-cat">
-        <div class="bug-cat-icon">📋</div>
-        <h3>Form Validation</h3>
-        <p>Overly strict regex, stale state carried between selections, generic error messages that don't help the user.</p>
-      </div>
-      <div class="bug-cat">
-        <div class="bug-cat-icon">🗄️</div>
-        <h3>Database / Data</h3>
-        <p>Incorrect data references, sale prices not honored, data fetching errors.</p>
-      </div>
-      <div class="bug-cat">
-        <div class="bug-cat-icon">🖱️</div>
-        <h3>Interaction &amp; State</h3>
-        <p>Buttons not responding, double-click registering twice, sold-out items silently added to cart.</p>
-      </div>
-      <div class="bug-cat">
-        <div class="bug-cat-icon">📱</div>
-        <h3>Device-Specific</h3>
-        <p>Touch targets too small on mobile, scroll bugs on iOS, viewport-specific rendering issues.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- CTA to Bug Guide + Solutions -->
-  <section id="materials">
-    <div class="section-label">Companion Materials</div>
-    <h2>Bug Guide &amp; Solutions</h2>
-    <p class="lead">Detailed bug tickets and their best-practice fixes live on their own pages. Open them alongside the workshop.</p>
-    <div class="materials-grid">
-      <a class="material-card" href="bugs.html">
-        <div class="material-card-eyebrow">Participants</div>
-        <h3>Bug Guide →</h3>
-        <p>Reproduction steps, comparison cases, and acceptance criteria for every bug. Filterable by type and severity.</p>
-      </a>
-      <a class="material-card" href="solutions.html">
-        <div class="material-card-eyebrow">Facilitators &amp; Debrief</div>
-        <h3>Solutions →</h3>
-        <p>Root cause, code fixes, and the best-practice principle behind each one. Reveal after your team has attempted the fix.</p>
-      </a>
-    </div>
+    <div class="objectives-tagline">Stuck? Use your teammates and the provided hints/guide to unblock yourself.</div>
   </section>
 
   <!-- AI Debugging Tips -->
   <section id="ai-tips">
     <div class="section-label">AI as Your Sidekick</div>
-    <h2>AI Debugging Templates</h2>
-    <p class="lead">AI agents can accelerate your debugging — but only if you prompt them well. Know where they shine and where they need a push, then use the three templates below.</p>
+    <h2>Prompting</h2>
+    <p class="lead">AI agents can accelerate your debugging — but only if you prompt them well. Know where they shine and where they need a push, then use the three-step framework below on every prompt.</p>
 
     <div class="ai-split">
       <div class="ai-split-card">
@@ -1637,29 +1521,36 @@
       </div>
     </div>
 
-    <div class="ai-tips">
-      <div class="ai-tip">
-        <h3>1. Precise Logic Fix</h3>
-        <p>When you've found the exact function or line that's wrong, give the AI full context and ask for a targeted fix.</p>
-        <div class="prompt-example">"Please look at this specific function below and tell me what is causing this bug (e.g., $2010 total). Do not rewrite the entire file, just show the corrected function. [Paste Code]."</div>
-      </div>
+    <p class="prompt-framework-intro">You can't throw a vague request at an agent and expect production-ready code. To get the most out of AI during a high-pressure release, use a three-step framework: <strong>Brief, Audit, and Own</strong>.</p>
 
-      <div class="ai-tip">
-        <h3>2. Narrow Console Error</h3>
-        <p>When you have an error message but aren't sure where it originates, paste the error and ask for likely causes.</p>
-        <div class="prompt-example">"I am getting this error on my console: [Paste Error]. It triggers when I fire this specific method: [Paste Method]. What are the top 3 most likely causes in Angular?"</div>
+    <div class="prompt-framework-grid">
+      <div class="prompt-framework-card">
+        <div class="prompt-framework-num">Step 1</div>
+        <h3>Brief the Agent</h3>
+        <ul>
+          <li>Define your role and the specific issue.</li>
+          <li>Provide full context — logs, code, environment.</li>
+          <li>State the current behavior vs. the expected behavior.</li>
+        </ul>
       </div>
-
-      <div class="ai-tip">
-        <h3>3. Broad Exploration</h3>
-        <p>When you're stuck and need a starting point, describe the unexpected behavior and let the AI suggest where to look.</p>
-        <div class="prompt-example">"The cart total shows $2,010 instead of $20.10. The relevant files are cart.service.ts and checkout.component.ts. Walk me through the data flow from adding an item to displaying the total, and flag where a string-to-number conversion issue might occur."</div>
+      <div class="prompt-framework-card">
+        <div class="prompt-framework-num">Step 2</div>
+        <h3>Audit the Output</h3>
+        <ul>
+          <li>Don't assume AI is correct — watch for hallucinations.</li>
+          <li>Force the agent to defend its logic.</li>
+          <li>Stress-test for missing edge cases.</li>
+        </ul>
       </div>
-    </div>
-
-    <div style="margin-top: 1.5rem; padding: 1rem 1.25rem; background: var(--surface); border-radius: 8px;">
-      <h3 style="font-size: 0.9rem; color: var(--accent-bright);">Remember: Audit the Output</h3>
-      <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 0.25rem;">Stop hallucinations in their tracks. Stress-test the AI's suggestions, push back on assumptions, and force the agent to defend its logic. Did it catch all the edge cases? <strong>Own your solution</strong> — don't just click "accept."</p>
+      <div class="prompt-framework-card">
+        <div class="prompt-framework-num">Step 3</div>
+        <h3>Own the Solution</h3>
+        <ul>
+          <li>Never just click "Accept."</li>
+          <li>Ask for step-by-step breakdowns.</li>
+          <li>Cross-reference with reputable documentation.</li>
+        </ul>
+      </div>
     </div>
   </section>
 
@@ -1679,7 +1570,7 @@
       </div>
       <div class="hint-item">
         <div class="hint-icon">🃏</div>
-        <div class="hint-text"><strong>Reach for the guide.</strong> Stuck? Skim the Bug Guide for repro steps and the AI Templates for prompting patterns. A facilitator is your last resort — not your first.</div>
+        <div class="hint-text"><strong>Reach for the guide.</strong> Stuck? Skim the Bug Guide for repro steps and the Brief · Audit · Own framework for prompting AI well. A facilitator is your last resort — not your first.</div>
       </div>
       <div class="hint-item">
         <div class="hint-icon">🔍</div>

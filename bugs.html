@@ -12,8 +12,11 @@
     --accent: #7B2FBE; --accent-bright: #E040A0; --accent-glow: rgba(123, 47, 190, 0.12);
     --border: #D8C8EE; --border-light: #EDE4F7;
     --card-bg: #FFFFFF; --card-shadow: rgba(27, 10, 46, 0.08);
+    --nav-bg: rgba(250, 251, 255, 0.92);
     --severity-critical: #DC3545; --severity-major: #E8960C; --severity-minor: #0EA5A0;
     --severity-critical-bg: #FFF0F1; --severity-major-bg: #FFF8E6; --severity-minor-bg: #E6FAF9;
+    --role-dev: #7B2FBE; --role-pm: #E040A0; --role-lead: #2563EB;
+    --role-qa: #0EA5A0; --role-director: #9333EA; --role-support: #D97706;
     --code-bg: #F5F0FA;
   }
   @media (prefers-color-scheme: dark) {
@@ -23,6 +26,7 @@
       --accent: #A855F7; --accent-bright: #F472B6; --accent-glow: rgba(168, 85, 247, 0.15);
       --border: #2D2050; --border-light: #251A40;
       --card-bg: #161028; --card-shadow: rgba(0, 0, 0, 0.3);
+      --nav-bg: rgba(13, 8, 21, 0.92);
       --severity-critical-bg: #2A0A10; --severity-major-bg: #2A1E05; --severity-minor-bg: #0A2220;
       --code-bg: #1A1230;
     }
@@ -33,6 +37,7 @@
     --accent: #A855F7; --accent-bright: #F472B6; --accent-glow: rgba(168, 85, 247, 0.15);
     --border: #2D2050; --border-light: #251A40;
     --card-bg: #161028; --card-shadow: rgba(0, 0, 0, 0.3);
+    --nav-bg: rgba(13, 8, 21, 0.92);
     --severity-critical-bg: #2A0A10; --severity-major-bg: #2A1E05; --severity-minor-bg: #0A2220;
     --code-bg: #1A1230;
   }
@@ -92,6 +97,54 @@
     .content { padding: 0 1rem 3rem; }
     .bug-guide-filter-label { min-width: auto; }
   }
+
+  /* ── Section nav (sticky) ── */
+  .section-nav { position: sticky; top: 0; z-index: 100; background: var(--nav-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--border-light); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .section-nav-inner { display: flex; gap: 0; max-width: 64rem; margin: 0 auto; padding: 0 1rem; }
+  .section-nav a { font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; color: var(--text-muted); padding: 0.875rem 1rem; white-space: nowrap; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; flex: 1 0 auto; text-align: center; }
+  .section-nav a:hover, .section-nav a:focus-visible { color: var(--accent); border-bottom-color: var(--accent); outline: none; }
+
+  /* ── Sections ── */
+  section { padding: 3rem 0; border-bottom: 1px solid var(--border-light); scroll-margin-top: 4rem; }
+  section:last-child { border-bottom: none; }
+  .section-label { font-family: var(--font-display); font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+  section > h2 { font-family: var(--font-display); font-size: clamp(1.35rem, 3vw, 1.75rem); font-weight: 700; line-height: 1.2; color: var(--text-primary); margin-bottom: 1rem; }
+  section > h3 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 600; color: var(--text-primary); margin-bottom: 0.5rem; }
+
+  /* ── Role cards ── */
+  .roles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
+  .role-card { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: 8px; padding: 1.5rem; box-shadow: 0 1px 3px var(--card-shadow); border-left: 4px solid var(--role-color, var(--accent)); }
+  .role-card-title { font-family: var(--font-display); font-size: 1rem; font-weight: 700; color: var(--role-color, var(--accent)); margin-bottom: 0.15rem; }
+  .role-card-vibe { font-size: 0.85rem; font-style: italic; color: var(--text-muted); margin-bottom: 0.75rem; }
+  .role-card p { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 0.75rem; }
+  .role-card-focus { font-family: var(--font-display); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.25rem; }
+  .role-card-focus-text { font-size: 0.88rem; color: var(--text-secondary); }
+  .role-card blockquote { margin-top: 0.75rem; padding: 0.6rem 0.85rem; background: var(--accent-glow); border-radius: 6px; font-size: 0.88rem; font-style: italic; color: var(--text-secondary); }
+  .role-card blockquote::before { content: '"'; font-size: 1.2rem; color: var(--accent); margin-right: 0.15rem; }
+
+  /* ── Severity guide + Priority × Effort matrix ── */
+  .severity-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.5rem; }
+  .severity-row { display: flex; gap: 1rem; align-items: flex-start; background: var(--card-bg); border: 1px solid var(--border-light); border-radius: 8px; padding: 1.25rem; box-shadow: 0 1px 3px var(--card-shadow); }
+  .severity-badge { flex-shrink: 0; width: 5.5rem; padding: 0.3rem 0; text-align: center; font-family: var(--font-display); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; border-radius: 4px; }
+  .severity-badge.critical { background: var(--severity-critical-bg); color: var(--severity-critical); }
+  .severity-badge.major { background: var(--severity-major-bg); color: var(--severity-major); }
+  .severity-badge.minor { background: var(--severity-minor-bg); color: var(--severity-minor); }
+  .severity-content h3 { font-size: 0.95rem; margin-bottom: 0.25rem; }
+  .severity-content p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.55; }
+  .severity-content .examples { margin-top: 0.5rem; font-size: 0.85rem; color: var(--text-muted); }
+  .effort-matrix { margin-top: 1.25rem; border-collapse: separate; border-spacing: 0.35rem; width: 100%; max-width: 40rem; }
+  .effort-matrix th, .effort-matrix td { padding: 0.6rem 0.75rem; text-align: center; font-size: 0.88rem; border-radius: 6px; }
+  .effort-matrix th { font-family: var(--font-display); font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); background: transparent; font-weight: 600; }
+  .effort-matrix td { background: var(--surface); color: var(--text-secondary); font-size: 0.85rem; line-height: 1.35; }
+  .effort-matrix td.quick-win { background: var(--accent); color: #ffffff; font-weight: 600; }
+  .effort-matrix .row-label { background: transparent; color: var(--text-primary); font-family: var(--font-display); font-weight: 700; letter-spacing: 0.06em; text-align: right; padding-right: 0.9rem; }
+
+  /* ── Bug categories ── */
+  .bug-categories { display: grid; grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .bug-cat { background: var(--card-bg); border: 1px solid var(--border-light); border-radius: 8px; padding: 1.25rem; box-shadow: 0 1px 3px var(--card-shadow); text-align: center; }
+  .bug-cat-icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
+  .bug-cat h3 { font-size: 0.95rem; text-align: center; margin-bottom: 0.35rem; }
+  .bug-cat p { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; }
 </style>
 
 <div class="masthead">
@@ -105,9 +158,194 @@
   </div>
 </div>
 
+<!-- Section Nav -->
+<nav class="section-nav" aria-label="Page sections">
+  <div class="section-nav-inner">
+    <a href="#roles">Roles</a>
+    <a href="#severity">Triage</a>
+    <a href="#bug-types">Bug Types</a>
+    <a href="#bug-list">Bug Report</a>
+  </div>
+</nav>
+
 <div class="content">
 
-  <p class="lead">Each ticket was filed by a different role — some brief, some deeply technical. Part of your job is to weigh what's said, what's missing, and what the reporter's perspective is telling you. Filter by bug type or reporter, and follow the solution link once your team has attempted a fix.</p>
+  <!-- Roles -->
+  <section id="roles">
+    <div class="section-label">Know Your Team</div>
+    <h2>Choose Your Role</h2>
+    <p class="lead">Pick a role from the cards below. Each role brings a unique perspective to the War Room — the goal is to advocate for priorities through your role's lens.</p>
+
+    <div class="roles-grid">
+      <div class="role-card" style="--role-color: var(--role-dev)">
+        <div class="role-card-title">Software Engineer / Developer</div>
+        <div class="role-card-vibe">The builder, the fixer, and the realist.</div>
+        <p>You're the one in the console, reading stack traces, and actually writing the code to fix the issues. You know how hard a fix will actually be.</p>
+        <div class="role-card-focus">Focus</div>
+        <div class="role-card-focus-text">Technical health of the app, state management, errors in the console, and writing the actual fix.</div>
+      </div>
+
+      <div class="role-card" style="--role-color: var(--role-pm)">
+        <div class="role-card-title">Product Owner / Product Manager</div>
+        <div class="role-card-vibe">The voice of the business and the customer.</div>
+        <p>You care about protecting revenue, conversion rates, and the brand's reputation. Less about how the code works, more about the user's experience.</p>
+        <div class="role-card-focus">Focus</div>
+        <div class="role-card-focus-text">Business impact, customer experience, and how the bug makes the company look.</div>
+      </div>
+
+      <div class="role-card" style="--role-color: var(--role-lead)">
+        <div class="role-card-title">People Leader / Engineering Manager</div>
+        <div class="role-card-vibe">The shield, the translator, and the resource allocator.</div>
+        <p>You protect the engineering team from unnecessary panic, ensure projects are scoped correctly, and make sure the right people work on the right things.</p>
+        <div class="role-card-focus">Focus</div>
+        <div class="role-card-focus-text">Team capacity, project prioritization, and shielding engineers so they can actually focus on debugging.</div>
+      </div>
+
+      <div class="role-card" style="--role-color: var(--role-qa)">
+        <div class="role-card-title">QA Tester</div>
+        <div class="role-card-vibe">The gatekeeper of quality and the customer advocate.</div>
+        <p>You create comprehensive test plans, identify edge cases, and ensure that the bug slips through to production are caught. You validate new features and regressions.</p>
+        <div class="role-card-focus">Focus</div>
+        <div class="role-card-focus-text">Identifying edge cases, ensuring the fix doesn't create new bugs, and validating from the user's perspective.</div>
+      </div>
+
+      <div class="role-card" style="--role-color: var(--role-director)">
+        <div class="role-card-title">Leadership / Director</div>
+        <div class="role-card-vibe">The big picture and the bottom line.</div>
+        <p>Strategic impact, brand reputation, and timeline. Highly detached from technical details but focused on blast radius. You need answers fast.</p>
+        <div class="role-card-focus">Focus</div>
+        <div class="role-card-focus-text">Revenue impact, brand risk, and high-level status updates for stakeholders.</div>
+      </div>
+
+      <div class="role-card" style="--role-color: var(--role-support)">
+        <div class="role-card-title">Customer Support (Optional)</div>
+        <div class="role-card-vibe">The frontline voice, calming the waters.</div>
+        <p>Not typically in the War Room during a launch — but once the product is in production, you're the one fielding the issues customers report. You collect the details engineering needs, spot patterns across tickets, and keep shoppers informed while a fix is on its way.</p>
+        <div class="role-card-focus">Focus</div>
+        <div class="role-card-focus-text">Triaging incoming customer-reported issues, surfacing patterns to engineering, and keeping affected customers informed while a fix lands.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Severity Guide -->
+  <section id="severity">
+    <div class="section-label">Triage &amp; Prioritize</div>
+    <h2>Bug Severity Levels</h2>
+    <p class="lead">Not every bug is created equal. Use these severity levels to decide which bugs to tackle first as a team.</p>
+
+    <h3 style="font-size: 1rem; margin-top: 1.75rem;">Priority × Effort — the quick-triage matrix</h3>
+    <p style="font-size: 0.92rem; color: var(--text-secondary); margin-top: 0.25rem;">Once every ticket has a priority (P1 = critical, P3 = cosmetic) and a rough effort estimate, drop it on the grid. Top-left is your <strong>Quick Win</strong> — highest impact, lowest cost. Start there.</p>
+
+    <table class="effort-matrix" aria-label="Priority × Effort matrix">
+      <thead>
+        <tr>
+          <th></th>
+          <th scope="col">Low Effort</th>
+          <th scope="col">Medium Effort</th>
+          <th scope="col">High Effort</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row" class="row-label">P1</th>
+          <td class="quick-win">Quick Win — do first</td>
+          <td>Do now; assign your best debugger</td>
+          <td>Ship a workaround, schedule the real fix</td>
+        </tr>
+        <tr>
+          <th scope="row" class="row-label">P2</th>
+          <td>Slot in this sprint</td>
+          <td>Next sprint</td>
+          <td>Ship a workaround now; split the real fix across sprints</td>
+        </tr>
+        <tr>
+          <th scope="row" class="row-label">P3</th>
+          <td>Batch with the next release</td>
+          <td>Backlog</td>
+          <td>Assign an owner and revisit date</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top: 1.25rem; padding: 1rem 1.25rem; background: var(--surface); border-radius: 8px; font-size: 0.92rem; color: var(--text-secondary); line-height: 1.55;">
+      <strong style="color: var(--text-primary);">Workaround vs. root-cause fix — pick on purpose.</strong>
+      A workaround shrinks the blast radius today (a feature flag, a hidden button, a "we know" banner). A root-cause fix removes the bug for good but takes longer to land.
+    </div>
+
+    <div class="severity-list">
+      <div class="severity-row">
+        <div class="severity-badge critical">Critical</div>
+        <div class="severity-content">
+          <h3>Blocker — Feature Completely Broken</h3>
+          <p>No workaround exists. Prevents a primary user flow. Causes severe loss of revenue, data loss, security vulnerabilities, or widespread app crashes.</p>
+          <div class="examples"><strong>Example impact:</strong> Users can't check out, the cart total is wrong by orders of magnitude, or the app crashes on load.</div>
+        </div>
+      </div>
+
+      <div class="severity-row">
+        <div class="severity-badge major">Major</div>
+        <div class="severity-content">
+          <h3>Behavioral — Badly Frustrating UX</h3>
+          <p>A workaround exists but causes highly frustrating user experience. Frustrated users can still eventually check out, but something important is clearly wrong.</p>
+          <div class="examples"><strong>Example impact:</strong> The cart doesn't update correctly, a promotional code fails to apply, or a form rejects valid input.</div>
+        </div>
+      </div>
+
+      <div class="severity-row">
+        <div class="severity-badge minor">Minor</div>
+        <div class="severity-content">
+          <h3>Cosmetic — Polish &amp; Alignment</h3>
+          <p>Typographical errors or minor alignment issues with negligible impact. The app functions correctly but looks less polished. Users can still shop without friction.</p>
+          <div class="examples"><strong>Example impact:</strong> A button has the wrong shade of color, a label has a typo, or icons are slightly misaligned.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bug Types -->
+  <section id="bug-types">
+    <div class="section-label">What You'll Encounter</div>
+    <h2>Bug Categories</h2>
+    <p class="lead">The Bug Report contains a variety of issue types. Each requires different debugging tools and approaches.</p>
+
+    <div class="bug-categories">
+      <div class="bug-cat">
+        <div class="bug-cat-icon">🎨</div>
+        <h3>Visual / CSS</h3>
+        <p>Layout breaks, z-index conflicts, pop-ups that won't close, mobile responsiveness issues.</p>
+      </div>
+      <div class="bug-cat">
+        <div class="bug-cat-icon">🔢</div>
+        <h3>Logic &amp; Calculation</h3>
+        <p>Incorrect totals, wrong price references, off-by-one errors, string math instead of number math.</p>
+      </div>
+      <div class="bug-cat">
+        <div class="bug-cat-icon">📋</div>
+        <h3>Form Validation</h3>
+        <p>Overly strict regex, stale state carried between selections, generic error messages that don't help the user.</p>
+      </div>
+      <div class="bug-cat">
+        <div class="bug-cat-icon">🗄️</div>
+        <h3>Database / Data</h3>
+        <p>Incorrect data references, sale prices not honored, data fetching errors.</p>
+      </div>
+      <div class="bug-cat">
+        <div class="bug-cat-icon">🖱️</div>
+        <h3>Interaction &amp; State</h3>
+        <p>Buttons not responding, double-click registering twice, sold-out items silently added to cart.</p>
+      </div>
+      <div class="bug-cat">
+        <div class="bug-cat-icon">📱</div>
+        <h3>Device-Specific</h3>
+        <p>Touch targets too small on mobile, scroll bugs on iOS, viewport-specific rendering issues.</p>
+      </div>
+    </div>
+  </section>
+  <!-- Bug Report (the primary bug list) -->
+  <section id="bug-list">
+    <div class="section-label">The Bug Report</div>
+    <h2>Reported Bugs</h2>
+    <p class="lead">Each ticket was filed by a different role — some brief, some deeply technical. Part of your job is to weigh what's said, what's missing, and what the reporter's perspective is telling you. Filter by bug type or reporter, and follow the solution link once your team has attempted a fix.</p>
 
   <div class="bug-guide-filter-row">
     <span class="bug-guide-filter-label">Type</span>
@@ -349,6 +587,42 @@
       </div>
     </div>
 
+    <div class="bug-guide-card" id="sale-price-not-honored" data-types="data" data-reporter="qa" style="--bug-guide-color: var(--role-qa); --bug-guide-bg: rgba(14, 165, 160, 0.12);">
+      <div class="bug-guide-card-header">
+        <div class="bug-guide-card-type">Data Bug</div>
+      </div>
+      <h3>Cart and checkout totals ignore the sale price</h3>
+      <div class="reporter-line" style="--reporter-color: var(--role-qa);"><span class="reporter-dot"></span>Reported by <strong>QA Tester</strong></div>
+      <p class="bug-guide-card-symptom">A shopper adds an item marked "On Sale" to their cart. The line-item price in the cart matches the sale price shown on the product card, but the cart Subtotal and Total — and the checkout Order Summary and <strong>Place Order</strong> button — are calculated from the higher crossed-out price instead of the sale price.</p>
+      <div class="bug-guide-sub">Reproduction Steps</div>
+      <ol>
+        <li>In the header, click <strong>Sale</strong> (or on the shop page, sort by <strong>On Sale</strong>) and pick any product showing a "Sale" badge with a strikethrough original price.</li>
+        <li>Click <strong>Add to Cart</strong>. The cart modal opens automatically.</li>
+        <li>In the modal, compare the line-item price against the modal's <strong>Total</strong> — the total is higher than the line-item price times quantity.</li>
+        <li>Click <strong>View Cart &amp; Checkout</strong>. On the cart page, the line item shows the sale price, but the <strong>Subtotal</strong> and <strong>Total</strong> use the original (pre-sale) price.</li>
+        <li>Click <strong>Proceed to Checkout</strong>. The Order Summary and the <strong>Place Order</strong> button both show the inflated total.</li>
+      </ol>
+      <div class="bug-guide-sub">Comparison Case</div>
+      <ol>
+        <li>Add a product <em>without</em> a "Sale" badge to the cart.</li>
+        <li>Observe that the line-item price, the modal total, the cart Subtotal, and the checkout total all agree.</li>
+      </ol>
+      <div class="bug-guide-sub">Acceptance Criteria</div>
+      <ol>
+        <li>Cart-modal total, cart-page Subtotal and Total, and checkout Order Summary all reflect the <em>sale</em> price for items on sale.</li>
+        <li>Per-line item totals in the cart page and checkout Order Summary agree with the summary Subtotal.</li>
+        <li>The <strong>Place Order</strong> button shows the same total as the Order Summary.</li>
+        <li>Non-sale items (no <code>compare_at_price</code>) are unaffected.</li>
+        <li>A percentage-based promo code applied on top of a sale item discounts against the sale price, not the crossed-out price.</li>
+      </ol>
+      <div class="workshop-prompt">
+        <strong>Your mission:</strong> Reproduce the mismatch between the line-item price and the summary total, trace how the cart's subtotal is computed, and propose a fix that honors the sale price consistently across the modal, cart, and checkout — without regressing non-sale items.
+      </div>
+      <div class="bug-guide-card-footer">
+        <a class="solution-link" href="solutions.html#sale-price-not-honored">View solution →</a>
+      </div>
+    </div>
+
     <div class="bug-guide-card" id="stale-search" data-types="search" data-reporter="dev" style="--bug-guide-color: var(--role-dev); --bug-guide-bg: rgba(123, 47, 190, 0.12);">
       <div class="bug-guide-card-header">
         <div class="bug-guide-card-type">Search Bug</div>
@@ -390,6 +664,9 @@
     </div>
 
   </div>
+  </section>
+
+
 </div>
 
 <script>
